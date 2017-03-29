@@ -1,6 +1,6 @@
 {
   "name"        :  "@superhero/socket",
-  "version"     :  "0.0.1",
+  "version"     :  "0.0.2",
   "description" :  "Tcp socket connection, client and server",
   "repository"  :  "git@github.com:superhero/js.socket.git",
   "main"        :  "lib/socket.js",
