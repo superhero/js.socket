@@ -1,0 +1,19 @@
+{
+  "name"        :  "@superhero/socket",
+  "version"     :  "0.0.1",
+  "description" :  "Tcp socket connection, client and server",
+  "repository"  :  "git@github.com:superhero/js.socket.git",
+  "main"        :  "lib/socket.js",
+  "license"     :  "MIT",
+  "keywords"    : ["socket","client","server"],
+  "author"      :
+  {
+    "name"  : "Erik Landvall",
+    "email" : "erik@landvall.se",
+    "url"   : "http://erik.landvall.se"
+  },
+  "dependencies":
+  {
+    "@superhero/debug" : "*"
+  }
+}
