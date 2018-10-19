@@ -70,10 +70,12 @@ class Socket
 
     const
     dto     = JSON.stringify({ event, data }),
-    buffer  = Buffer.from(dto)
+    body    = Buffer.from(dto),
+    header  = Buffer.from(body.length),
+    payload = Buffer.concat(header, body)
 
     return new Promise((fulfill, reject) =>
-      socket.write(buffer, (error) =>
+      socket.write(payload, (error) =>
       {
         if(error)
         {
