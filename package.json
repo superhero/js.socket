@@ -1,9 +1,9 @@
 {
   "name"        :  "@superhero/socket",
-  "version"     :  "0.1.10",
-  "description" :  "Tcp socket connection, client and server",
+  "version"     :  "0.2.0",
+  "description" :  "TCP socket connection, client and server",
   "repository"  :  "git@github.com:superhero/js.socket.git",
-  "main"        :  "lib/socket.js",
+  "main"        :  "index.js",
   "license"     :  "MIT",
   "keywords"    : ["socket","client","server"],
   "author"      :
