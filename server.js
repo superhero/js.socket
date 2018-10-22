@@ -1,22 +1,39 @@
 const
-Socket = require('./socket'),
-Server = new require('net').Server()
+NetServer         = new require('net').Server(),
+SocketConnection  = require('./socket/connection')
 
-class SocketServer extends Socket
+class SocketServer
 {
-  createServer()
+  createClient(log, events)
   {
-    const server = new Server
+    const
+    connection  = new SocketConnection(log, events),
+    server      = new NetServer
 
-    for(let event of ['close','connection','listening'])
-      server.on(event, () => this.log(event))
-
-    for(let event of ['error'])
-      server.on(event, (...a) => this.log(event, ...a))
-
-    server.on('connection', this.onConnection.bind(this))
+    this.logServerEvents(server, log)
+    this.attachConnectionEventToObserver(server, connection)
 
     return server
+  }
+
+  /**
+   * @protected
+   */
+  logServerEvents(server, log)
+  {
+    for(let event of ['close','connection','listening'])
+      server.on(event, () => log(event))
+
+    for(let event of ['error'])
+      server.on(event, (...a) => log(event, ...a))
+  }
+
+  /**
+   * @protected
+   */
+  attachConnectionEventToObserver(server, connection)
+  {
+    server.on('connection', connection.onConnection.bind(connection))
   }
 }
 
