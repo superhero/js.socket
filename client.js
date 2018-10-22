@@ -4,20 +4,20 @@ Client = new require('net').Client()
 
 class SocketClient extends Socket
 {
-  constructor(port, host)
+  createClient(port, host)
   {
-    super()
-
-    this.client = new Client
+    const client = new Client
 
     for(let event of ['close','connection','listening'])
-      this.client.on(event, () => this.log(event))
+      client.on(event, () => this.log(event))
 
     for(let event of ['error'])
-      this.client.on(event, (...a) => this.log(event, ...a))
+      client.on(event, (...a) => this.log(event, ...a))
 
-    this.client.connect(port, host, () => this.onConnection.bind(this))
+    client.connect(port, host, () => this.onConnection.bind(this))
+
+    return client
   }
 }
 
-module.exports = SocketServer
+module.exports = SocketClient

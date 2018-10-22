@@ -4,19 +4,19 @@ Server = new require('net').Server()
 
 class SocketServer extends Socket
 {
-  constructor()
+  createServer()
   {
-    super()
-
-    this.server = new Server
+    const server = new Server
 
     for(let event of ['close','connection','listening'])
-      this.server.on(event, () => this.log(event))
+      server.on(event, () => this.log(event))
 
     for(let event of ['error'])
-      this.server.on(event, (...a) => this.log(event, ...a))
+      server.on(event, (...a) => this.log(event, ...a))
 
-    this.server.on('connection', this.onConnection.bind(this))
+    server.on('connection', this.onConnection.bind(this))
+
+    return server
   }
 }
 

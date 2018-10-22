@@ -6,17 +6,17 @@ class Socket
 {
   constructor()
   {
-    this.log    = new Debug({ prefix:'socket client:' })
+    this.log    = new Debug({ prefix:'socket:' })
     this.events = new Events
   }
 
   onConnection(socket)
   {
     for(let event of ['close','connection','drain','end','lookup','timeout'])
-      socket.on(event, () => this.log('socket:', event))
+      socket.on(event, () => this.log('connection:', event))
 
     for(let event of ['error'])
-      socket.on(event, (...a) => this.log('socket:', event, ...a))
+      socket.on(event, (...a) => this.log('connection:', event, ...a))
 
     const ctx   = { socket }
     ctx.emit    = this.emit.bind(this, socket)
@@ -27,7 +27,7 @@ class Socket
 
   onData(ctx, data)
   {
-    this.log('socket:', 'data')
+    this.log('data')
 
     // messages can come in multiple chunks that needs to be glued together
     ctx.buffer = Buffer.concat([ctx.buffer, data].filter(_ => _))
