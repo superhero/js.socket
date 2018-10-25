@@ -18,7 +18,7 @@ describe('Socket/Client', () =>
     socketServer.listen(port)
     socketClient.connect(port)
 
-    socketClient.client.on('connect', () => socketClient.emit(event, body))
+    socketClient.emit(event, body)
 
     socketServer.on(event, (context, data) =>
     {
