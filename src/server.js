@@ -29,6 +29,11 @@ class SocketServer
     this.connection.dispatcher.events.once(...args)
   }
 
+  removeListener(...args)
+  {
+    this.connection.dispatcher.events.removeListener(...args)
+  }
+
   /**
    * @protected
    */

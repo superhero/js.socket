@@ -1,14 +1,14 @@
 {
   "stats": {
     "suites": 9,
-    "tests": 17,
-    "passes": 17,
+    "tests": 19,
+    "passes": 19,
     "pending": 0,
     "failures": 0,
-    "start": "2018-10-25T15:22:22.639Z",
-    "end": "2018-10-25T15:22:22.667Z",
-    "duration": 28,
-    "testsRegistered": 17,
+    "start": "2018-10-26T14:50:38.358Z",
+    "end": "2018-10-26T14:50:38.383Z",
+    "duration": 25,
+    "testsRegistered": 19,
     "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "fc40df1e-c9c4-4e90-ab81-57496260847a",
+    "uuid": "a8297b82-344a-483d-ac05-9b67c208d9e3",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -28,7 +28,7 @@
     "tests": [],
     "suites": [
       {
-        "uuid": "e34bdbc1-7a31-4684-bf4e-cdbfc12eb548",
+        "uuid": "d236af0f-8c92-4217-9273-1d48d38c87d1",
         "title": "Socket/Client",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/client.test.js",
         "file": "/src/client.test.js",
@@ -36,8 +36,8 @@
         "afterHooks": [],
         "tests": [
           {
-            "title": "integration test",
-            "fullTitle": "Socket/Client integration test",
+            "title": "integration test between client and server",
+            "fullTitle": "Socket/Client integration test between client and server",
             "timedOut": false,
             "duration": 10,
             "state": "passed",
@@ -48,14 +48,32 @@
             "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nSocketServer  = require('./server'),\nsocketServer  = new SocketServer(log),\nSocketClient  = require('./client'),\nsocketClient  = new SocketClient(log),\nport          = 18200,\nevent         = 'foobar',\nbody          = { foo:'bar' }\nsocketServer.listen(port)\nsocketClient.connect(port)\nsocketClient.emit(event, body)\nsocketServer.on(event, (context, data) =>\n{\n  expect(data).to.deep.equal(body)\n  socketClient.client.end()\n  socketServer.server.close()\n  done()\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "79526af2-81fd-4c42-8fa5-d3124d8c7bc1",
+            "uuid": "047dc6a2-8f8c-4971-a2c3-4d17c3523e7c",
+            "isHook": false,
+            "skipped": false
+          },
+          {
+            "title": "possible to remove a listener",
+            "fullTitle": "Socket/Client possible to remove a listener",
+            "timedOut": false,
+            "duration": 0,
+            "state": "passed",
+            "speed": "fast",
+            "pass": true,
+            "fail": false,
+            "pending": false,
+            "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nSocketClient  = require('./client'),\nsocketClient  = new SocketClient(log),\nevent         = 'foobar',\nlistener      = () => {}\nexpect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)\nsocketClient.on(event, listener)\nexpect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(1)\nsocketClient.removeListener(event, listener)\nexpect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)",
+            "err": {},
+            "isRoot": false,
+            "uuid": "e3b9d263-8cf9-4ff7-ae0d-1fe1cfcb4ad7",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "79526af2-81fd-4c42-8fa5-d3124d8c7bc1"
+          "047dc6a2-8f8c-4971-a2c3-4d17c3523e7c",
+          "e3b9d263-8cf9-4ff7-ae0d-1fe1cfcb4ad7"
         ],
         "failures": [],
         "pending": [],
@@ -66,7 +84,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "1cc9db96-de02-48ba-8af3-a81145523760",
+        "uuid": "1437999c-fbaa-485d-ada2-d472292d15f0",
         "title": "Socket/Connection",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/connection.test.js",
         "file": "/src/connection.test.js",
@@ -86,7 +104,7 @@
             "code": "const\nDebug             = require('@superhero/debug'),\nlog               = new Debug({ debug:false }),\nEvents            = require('events'),\nevents            = new Events,\nSocketConnection  = require('./connection'),\nsocketConnection  = new SocketConnection(log, events),\nNetSocket         = require('net').Socket,\nnetSocket         = new NetSocket,\ndispatcher        = socketConnection.dispatcher,\nemitter           = socketConnection.emitter,\nSocketContext     = require('./context'),\nsocketContext     = new SocketContext(netSocket, emitter)\nexpect(netSocket.listenerCount('data')).to.be.equal(0)\nsocketConnection.attachDataEventToDispatcherWithAContext(netSocket, dispatcher, context)\nexpect(netSocket.listenerCount('data')).to.be.equal(1)",
             "err": {},
             "isRoot": false,
-            "uuid": "11a232f5-2f7e-4e2a-bb8c-0b49fb77381e",
+            "uuid": "28985981-4c7d-4240-8a76-45e95c0b730c",
             "isHook": false,
             "skipped": false
           },
@@ -103,7 +121,7 @@
             "code": "const\nDebug             = require('@superhero/debug'),\nlog               = new Debug({ debug:false }),\nEvents            = require('events'),\nevents            = new Events,\nSocketConnection  = require('./connection'),\nsocketConnection  = new SocketConnection(log, events),\nNetSocket         = require('net').Socket,\nnetSocket         = new NetSocket,\nemitter           = socketConnection.emitter\nfor(const event of ['close','connection','drain','lookup','timeout','error'])\n  expect(event + netSocket.listenerCount(event)).to.be.equal(event + 0)\nsocketConnection.logSocketEvents(netSocket, log)\nfor(const event of ['close','connection','drain','lookup','timeout','error'])\n  expect(event + netSocket.listenerCount(event)).to.be.equal(event + 1)",
             "err": {},
             "isRoot": false,
-            "uuid": "8026bd90-768b-4695-b07c-73d975def900",
+            "uuid": "1b208a78-edbe-4a76-aacc-16d0455e3025",
             "isHook": false,
             "skipped": false
           },
@@ -120,16 +138,16 @@
             "code": "const\nDebug             = require('@superhero/debug'),\nlog               = new Debug({ debug:false }),\nEvents            = require('events'),\nevents            = new Events,\nSocketConnection  = require('./connection'),\nsocketConnection  = new SocketConnection(log, events),\nNetSocket         = require('net').Socket,\nnetSocket         = new NetSocket\nfor(const event of ['close','connection','drain','lookup','timeout','error','data'])\n  expect(event + netSocket.listenerCount(event)).to.be.equal(event + 0)\nsocketConnection.onConnection(netSocket)\nfor(const event of ['close','connection','drain','lookup','timeout','error','data'])\n  expect(event + netSocket.listenerCount(event)).to.be.equal(event + 1)",
             "err": {},
             "isRoot": false,
-            "uuid": "358e12cd-d511-4904-91df-0d13fc0ebf9e",
+            "uuid": "0e1a68d5-5a92-42bd-8a1d-57482a64c963",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "11a232f5-2f7e-4e2a-bb8c-0b49fb77381e",
-          "8026bd90-768b-4695-b07c-73d975def900",
-          "358e12cd-d511-4904-91df-0d13fc0ebf9e"
+          "28985981-4c7d-4240-8a76-45e95c0b730c",
+          "1b208a78-edbe-4a76-aacc-16d0455e3025",
+          "0e1a68d5-5a92-42bd-8a1d-57482a64c963"
         ],
         "failures": [],
         "pending": [],
@@ -140,7 +158,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "eab95ff4-5162-41af-8aef-f267142aa2b6",
+        "uuid": "258b7927-1ad0-44ba-ac97-da673a18a57d",
         "title": "Socket/Context",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/context.test.js",
         "file": "/src/context.test.js",
@@ -151,7 +169,7 @@
             "title": "expected format",
             "fullTitle": "Socket/Context expected format",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -160,25 +178,25 @@
             "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nEmitter       = require('./emitter'),\nemitter       = new Emitter(log),\nNetSocket     = require('net').Socket,\nnetSocket     = new NetSocket,\nSocketContext = require('./context'),\nsocketContext = new SocketContext(netSocket, emitter),\nPayloadStack  = require('./payload-stack')\nexpect(socketContext.socket).deep.equal(netSocket)\nexpect(socketContext.emit).to.be.a('function')\nexpect(socketContext.payloadStack).to.be.an.instanceof(PayloadStack)",
             "err": {},
             "isRoot": false,
-            "uuid": "e463c664-a3ef-48ad-b154-506fbeca6a22",
+            "uuid": "b230988a-63b9-4c8f-b898-b147d50fd01d",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "e463c664-a3ef-48ad-b154-506fbeca6a22"
+          "b230988a-63b9-4c8f-b898-b147d50fd01d"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 0,
+        "duration": 1,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "373afb0e-8abc-4cb0-95b0-dbb30ecc8eb3",
+        "uuid": "32c7e65d-a0ce-4d91-91ee-4e0c44255b48",
         "title": "Socket/Dispatcher",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/dispatcher.test.js",
         "file": "/src/dispatcher.test.js",
@@ -189,7 +207,7 @@
             "title": "handle error",
             "fullTitle": "Socket/Dispatcher handle error",
             "timedOut": false,
-            "duration": 1,
+            "duration": 0,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -198,7 +216,7 @@
             "code": "const\nDebug                   = require('@superhero/debug'),\nlog                     = new Debug({ debug:false }),\nDispatcher              = require('./dispatcher'),\ndispatcher              = new Dispatcher(log),\nIncompleteMessageError  = require('./payload-stack/error/incomplete-message'),\nincompleteMessageError  = new IncompleteMessageError,\nerror                   = new Error,\ncallbackThrows          = dispatcher.handleError.bind(dispatcher, error),\ncallbackDoesNotThrow    = dispatcher.handleError.bind(dispatcher, incompleteMessageError)\nexpect(callbackThrows).to.throw()\nexpect(callbackDoesNotThrow).to.not.throw()",
             "err": {},
             "isRoot": false,
-            "uuid": "608caf2c-4d4a-48e4-9a9b-72261b832861",
+            "uuid": "01dc64f9-3c98-4e13-98f3-ac2ea4685f45",
             "isHook": false,
             "skipped": false
           },
@@ -206,7 +224,7 @@
             "title": "loop through context buffer to dispatch each message one by one",
             "fullTitle": "Socket/Dispatcher loop through context buffer to dispatch each message one by one",
             "timedOut": false,
-            "duration": 1,
+            "duration": 0,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -215,26 +233,26 @@
             "code": "const\nDebug             = require('@superhero/debug'),\nlog               = new Debug({ debug:false }),\nSocketDispatcher  = require('./dispatcher'),\nsocketDispatcher  = new SocketDispatcher(log),\nSocketPayload     = require('./payload-stack/payload'),\nevent             = 'foobar',\nbody              = { foo:'bar' },\nbuffer            = new SocketPayload(event, body).toBuffer(),\nSocketEmitter     = require('./emitter'),\nsocketEmitter     = new SocketEmitter(log),\nport              = 18200,\nnetClient         = require('net').createConnection({ port }),\nnetServer         = require('net').createServer().listen(port),\nSocketContext     = require('./context'),\nsocketContext     = new SocketContext(netClient, socketEmitter)\nsocketContext.payloadStack.push(buffer, buffer)\nnetClient.on('connect', () => socketDispatcher.loopThroughContextBufferToDispatchEachMessageOneByOne(socketContext))\nlet i = 0\nsocketDispatcher.events.on(event, (context, data) =>\n{\n  if(++i === 2)\n  {\n    expect(data).to.deep.equal(body)\n    netClient.end()\n    netServer.close()\n    done()\n  }\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "1cbb8572-e905-4d56-b4ce-c099ea023fad",
+            "uuid": "f0abf415-9584-4a0a-9c33-59c0a09e4ab2",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "608caf2c-4d4a-48e4-9a9b-72261b832861",
-          "1cbb8572-e905-4d56-b4ce-c099ea023fad"
+          "01dc64f9-3c98-4e13-98f3-ac2ea4685f45",
+          "f0abf415-9584-4a0a-9c33-59c0a09e4ab2"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 2,
+        "duration": 0,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "727a9c1c-c2a9-4b19-b156-9e89216180ee",
+        "uuid": "fe07c003-d31f-4b29-9523-456232d123bc",
         "title": "Socket/Emitter",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/emitter.test.js",
         "file": "/src/emitter.test.js",
@@ -254,7 +272,7 @@
             "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nSocketEmitter = require('./emitter'),\nsocketEmitter = new SocketEmitter(log),\nport          = 18200,\nnetClient     = require('net').createConnection({ port }),\nnetServer     = require('net').createServer().listen(port),\nbuffer        = Buffer.from('foobar')\nnetClient.on('connect', async () =>\n{\n  await socketEmitter.writeBufferToSocket(netClient, buffer)\n})\nnetServer.on('connection', (socket) => socket.on('data', (data) =>\n{\n  expect(data.toString()).to.be.equal(buffer.toString())\n  socket.end()\n  netServer.close()\n}))\nnetServer.on('close', () => done())",
             "err": {},
             "isRoot": false,
-            "uuid": "b8d43154-484f-42ef-b852-1dca23e1f139",
+            "uuid": "fd86e080-56b9-4ee4-bc49-d486c84f72e9",
             "isHook": false,
             "skipped": false
           },
@@ -271,15 +289,15 @@
             "code": "const\nSocketPayloadStack  = require('./payload-stack'),\nsocketPayloadStack  = new SocketPayloadStack,\nDebug               = require('@superhero/debug'),\nlog                 = new Debug({ debug:false }),\nSocketEmitter       = require('./emitter'),\nsocketEmitter       = new SocketEmitter(log),\nport                = 18200,\nnetClient           = require('net').createConnection({ port }),\nnetServer           = require('net').createServer().listen(port),\nevent               = 'foobar',\nbody                = { foo:'bar' }\nnetClient.on('connect', async () =>\n{\n  await socketEmitter.emit(netClient, event, body)\n})\nnetServer.on('connection', (socket) =>\n{\n  socket.on('data', (data) =>\n  {\n    socketPayloadStack.push(data)\n    const dto = socketPayloadStack.shift()\n    expect(dto.event).to.be.equal(event)\n    expect(dto.data).to.deep.equal(body)\n    socket.end()\n    netServer.close()\n  })\n})\nnetServer.on('close', () => done())",
             "err": {},
             "isRoot": false,
-            "uuid": "f7a8f33c-1d86-41c0-be21-3f42a31a1a1a",
+            "uuid": "7d0649d5-3c70-4ad2-8435-4a03725c5aee",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "b8d43154-484f-42ef-b852-1dca23e1f139",
-          "f7a8f33c-1d86-41c0-be21-3f42a31a1a1a"
+          "fd86e080-56b9-4ee4-bc49-d486c84f72e9",
+          "7d0649d5-3c70-4ad2-8435-4a03725c5aee"
         ],
         "failures": [],
         "pending": [],
@@ -290,7 +308,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "21345ca6-0e21-445e-aabf-544757bfc217",
+        "uuid": "45ce3337-0547-4ac0-bbf2-c74b1477c2df",
         "title": "Socket/Payload/Error/IncompleteMessage",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/payload-stack/error/incomplete-message.test.js",
         "file": "/src/payload-stack/error/incomplete-message.test.js",
@@ -310,7 +328,7 @@
             "code": "const\nIncompleteMessageError = require('./incomplete-message'),\nerror = new IncompleteMessageError\nexpect(error).to.be.an.instanceof(Error)",
             "err": {},
             "isRoot": false,
-            "uuid": "f0840bd2-1b2c-4c67-8bea-0436d265a4e6",
+            "uuid": "971da53e-f47c-442e-846f-b476aeef7ce5",
             "isHook": false,
             "skipped": false
           },
@@ -327,15 +345,15 @@
             "code": "const\nIncompleteMessageError = require('./incomplete-message'),\nerror = new IncompleteMessageError\nexpect(error.code).to.be.equal('ERR_INCOMPLETE_MESSAGE')",
             "err": {},
             "isRoot": false,
-            "uuid": "a315577c-7596-4dad-901f-fe323fbe2897",
+            "uuid": "65a1863f-cc3a-4775-b092-b621bd6f7da1",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "f0840bd2-1b2c-4c67-8bea-0436d265a4e6",
-          "a315577c-7596-4dad-901f-fe323fbe2897"
+          "971da53e-f47c-442e-846f-b476aeef7ce5",
+          "65a1863f-cc3a-4775-b092-b621bd6f7da1"
         ],
         "failures": [],
         "pending": [],
@@ -346,7 +364,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "1bf04710-ca5b-4aa8-89b7-69b7277eb8c0",
+        "uuid": "b4b82a5d-4444-4c65-bcfa-afecff94b7b5",
         "title": "Socket/PayloadStack",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/payload-stack/index.test.js",
         "file": "/src/payload-stack/index.test.js",
@@ -366,7 +384,7 @@
             "code": "const\nSocketPayloadStack  = require('./index'),\nsocketPayloadStack  = new SocketPayloadStack,\nfoo                 = 'foobar',\ndata                = { foo:'bar' },\nSocketPayload       = require('./payload'),\nsocketPayload       = new SocketPayload(foo, data),\nbuffer              = socketPayload.toBuffer()\nsocketPayloadStack.push(buffer)\nconst message = socketPayloadStack.shift()\nexpect(message.event).to.be.equal(foo)\nexpect(message.data).deep.equal(data)\nexpect(socketPayloadStack.stack.length).to.be.equal(0)",
             "err": {},
             "isRoot": false,
-            "uuid": "60f13059-2a67-4090-8e5b-6f44980ed991",
+            "uuid": "c469166e-77df-4444-ba10-e5d0efff4ab2",
             "isHook": false,
             "skipped": false
           },
@@ -374,7 +392,7 @@
             "title": "shift a message from the buffer stack that holds a broken message",
             "fullTitle": "Socket/PayloadStack shift a message from the buffer stack that holds a broken message",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -383,26 +401,26 @@
             "code": "const\nSocketPayloadStack  = require('./index'),\nsocketPayloadStack  = new SocketPayloadStack,\nevent               = 'foobar',\ndata                = { foo:'bar' },\nSocketPayload       = require('./payload'),\nsocketPayload       = new SocketPayload(event, data),\nbuffer              = socketPayload.toBuffer().slice(20),\ncallback            = socketPayloadStack.shift.bind(socketPayloadStack)\nsocketPayloadStack.push(buffer)\nexpect(callback).to.throw(Error).with.property('code', 'ERR_INCOMPLETE_MESSAGE')",
             "err": {},
             "isRoot": false,
-            "uuid": "326dfd19-2630-4f72-8771-ed0a06c642fa",
+            "uuid": "bad51fbb-f465-46b0-b246-cb9ed4f8f230",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "60f13059-2a67-4090-8e5b-6f44980ed991",
-          "326dfd19-2630-4f72-8771-ed0a06c642fa"
+          "c469166e-77df-4444-ba10-e5d0efff4ab2",
+          "bad51fbb-f465-46b0-b246-cb9ed4f8f230"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 0,
+        "duration": 1,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "560c0f6d-b3d7-4273-bf52-8891e0cbc2ac",
+        "uuid": "b279ee4c-b204-4480-adf0-55f6ea8820e0",
         "title": "Socket/PayloadStack/Payload",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/payload-stack/payload/index.test.js",
         "file": "/src/payload-stack/payload/index.test.js",
@@ -413,7 +431,7 @@
             "title": "is mutable",
             "fullTitle": "Socket/PayloadStack/Payload is mutable",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -422,7 +440,7 @@
             "code": "const\nevent = 'foobar',\ndata  = { foo:'bar' },\nSocketPayload = require('./index'),\nsocketPayload = new SocketPayload(event, data)\nsocketPayload.event = 'barbaz'\nexpect(socketPayload.event).to.be.equal(event)",
             "err": {},
             "isRoot": false,
-            "uuid": "4b35ec7e-83f8-4819-90a6-4b8e94a77d37",
+            "uuid": "b5a86896-285e-433d-94e6-494fb1638379",
             "isHook": false,
             "skipped": false
           },
@@ -439,7 +457,7 @@
             "code": "const\nevent = 'foobar',\ndata  = { foo:'bar' },\nSocketPayload = require('./index'),\nsocketPayload = new SocketPayload(event, data)\nsocketPayload.event = 'barbaz'\nexpect(socketPayload.toBuffer.bind(socketPayload)).to.not.throw()",
             "err": {},
             "isRoot": false,
-            "uuid": "499ff3f3-03f0-4726-b9ea-2c3a53aaddf5",
+            "uuid": "c716c5f0-e91a-4674-8467-7dad33186029",
             "isHook": false,
             "skipped": false
           },
@@ -456,27 +474,27 @@
             "code": "const\nevent = 'foobar',\ndata  = { foo:'bar' },\nSocketPayload = require('./index'),\nsocketPayload = new SocketPayload(event, data),\nbuffer = socketPayload.toBuffer(),\nlength = buffer.readInt32BE(0)\nexpect(SocketPayload.HEADER_SIZE + length).to.be.equal(buffer.length)",
             "err": {},
             "isRoot": false,
-            "uuid": "6fd19fa7-0593-4963-b999-b6016eae88b2",
+            "uuid": "46cd7205-65d6-4e31-885b-89bfbf280d51",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "4b35ec7e-83f8-4819-90a6-4b8e94a77d37",
-          "499ff3f3-03f0-4726-b9ea-2c3a53aaddf5",
-          "6fd19fa7-0593-4963-b999-b6016eae88b2"
+          "b5a86896-285e-433d-94e6-494fb1638379",
+          "c716c5f0-e91a-4674-8467-7dad33186029",
+          "46cd7205-65d6-4e31-885b-89bfbf280d51"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 0,
+        "duration": 1,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "79502896-93ad-4d47-9ed8-34c7e7d835c7",
+        "uuid": "7a63ab90-fca6-4afe-9138-26399a2bbb32",
         "title": "Socket/Server",
         "fullFile": "/home/erik/Projects/@superhero/js.socket/src/server.test.js",
         "file": "/src/server.test.js",
@@ -496,14 +514,32 @@
             "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nSocketServer  = require('./server'),\nsocketServer  = new SocketServer(log),\nSocketClient  = require('./client'),\nsocketClient  = new SocketClient(log),\nport          = 18200,\nevent         = 'foobar',\nbody          = { foo:'bar' }\nsocketServer.listen(port)\nsocketClient.connect(port)\nsocketClient.emit(event, body)\nsocketServer.on(event, (context, data) =>\n{\n  expect(data).to.deep.equal(body)\n  context.emit(event, body)\n})\nsocketClient.on(event, (context, data) =>\n{\n  expect(data).to.deep.equal(body)\n  socketClient.client.end()\n  socketServer.server.close()\n  done()\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "af4450cb-d0f5-4ad2-8e41-70b37a6e3027",
+            "uuid": "2e550109-4c33-4b08-971e-0f85ccc64082",
+            "isHook": false,
+            "skipped": false
+          },
+          {
+            "title": "possible to remove a listener",
+            "fullTitle": "Socket/Server possible to remove a listener",
+            "timedOut": false,
+            "duration": 0,
+            "state": "passed",
+            "speed": "fast",
+            "pass": true,
+            "fail": false,
+            "pending": false,
+            "code": "const\nDebug         = require('@superhero/debug'),\nlog           = new Debug({ debug:false }),\nSocketServer  = require('./server'),\nsocketServer  = new SocketServer(log),\nevent         = 'foobar',\nlistener      = () => {}\nexpect(socketServer.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)\nsocketServer.on(event, listener)\nexpect(socketServer.connection.dispatcher.events.listenerCount(event)).to.deep.equal(1)\nsocketServer.removeListener(event, listener)\nexpect(socketServer.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)",
+            "err": {},
+            "isRoot": false,
+            "uuid": "6ec6f4a0-5a65-4183-a916-e64e76b01e67",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "af4450cb-d0f5-4ad2-8e41-70b37a6e3027"
+          "2e550109-4c33-4b08-971e-0f85ccc64082",
+          "6ec6f4a0-5a65-4183-a916-e64e76b01e67"
         ],
         "failures": [],
         "pending": [],
