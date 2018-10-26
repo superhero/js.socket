@@ -29,11 +29,11 @@ A simple example to get started follows.
 
 ```js
 const
-Debug         = require('@superhero/debug'),
 SocketServer  = require('./server'),
 SocketClient  = require('./client'),
-// log        = console,
-log           = new Debug({ debug:true }),
+// Debug      = require('@superhero/debug'),
+// log        = new Debug({ debug:true }),
+log           = console,
 socketServer  = new SocketServer(log),
 socketClient  = new SocketClient(log),
 port          = 18200,
