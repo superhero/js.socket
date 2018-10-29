@@ -39,11 +39,10 @@ class SocketServer
    */
   logServerEvents(server, log)
   {
-    for(let event of ['close','connection','listening'])
-      server.on(event, () => log.info(event))
+    ['close','connection','listening']
+    .forEach((event) => server.on(event, () => log.info(event)))
 
-    for(let event of ['error'])
-      server.on(event, (...a) => log.info(event, ...a))
+    server.on('error', (...a) => log.info('error', ...a))
   }
 
   /**

@@ -56,11 +56,10 @@ class SocketClient
    */
   logClientEvents(client, log)
   {
-    for(let event of ['close','connection','listening'])
-      client.on(event, () => log.info(event))
+    ['close','connect','data','drain','end','error','lookup','ready','timeout']
+    .forEach((event) => client.on(event, () => log.info(event)))
 
-    for(let event of ['error'])
-      client.on(event, (...a) => log.info(event, ...a))
+    client.on('error', (...a) => log.info('error', ...a))
   }
 }
 

@@ -6,7 +6,7 @@ describe('Socket/Client', () =>
   {
     const
     Debug         = require('@superhero/debug'),
-    log           = new Debug({ debug:false }),
+    log           = new Debug({ debug:true }),
     SocketServer  = require('./server'),
     socketServer  = new SocketServer(log),
     SocketClient  = require('./client'),
