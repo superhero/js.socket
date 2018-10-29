@@ -14,9 +14,10 @@ class ConnectionObserver
   static from(log)
   {
     const
-    dispatcher  = Dispatcher.from(log),
-    emitter     = Emitter.from(log),
-    observer    = new ConnectionObserver(log, dispatcher, emitter)
+    dispatcher    = Dispatcher.from(log),
+    emitter       = Emitter.from(log),
+    createContext = Context.from,
+    observer      = new ConnectionObserver(log, dispatcher, emitter, createContext)
 
     return observer
   }
@@ -25,12 +26,14 @@ class ConnectionObserver
    * @param {Logger} log
    * @param {Dispatcher} dispatcher
    * @param {Emitter} emitter
+   * @param {Context~from} createContext
    */
-  constructor(log, dispatcher, emitter)
+  constructor(log, dispatcher, emitter, createContext)
   {
-    this.log        = log
-    this.dispatcher = dispatcher
-    this.emitter    = emitter
+    this.log            = log
+    this.dispatcher     = dispatcher
+    this.emitter        = emitter
+    this.createContext  = createContext
   }
 
   /**
@@ -39,7 +42,7 @@ class ConnectionObserver
   onConnection(socket)
   {
     this.logSocketEvents(socket, this.log)
-    const context = Context.from(socket, this.emitter)
+    const context = this.createContext(socket, this.emitter)
     this.attachDataEventToDispatcherWithAContext(socket, this.dispatcher, context)
   }
 

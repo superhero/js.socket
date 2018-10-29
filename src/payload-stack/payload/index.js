@@ -4,6 +4,7 @@
 class Payload
 {
   /**
+   * @callback Payload~from
    * @param {string} event
    * @param {*} data
    */

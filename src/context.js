@@ -8,6 +8,7 @@ const PayloadStack = require('./payload-stack')
 class Context
 {
   /**
+   * @callback Context~from
    * @param {net.Socket} socket
    * @param {Emitter} emitter
    */

@@ -10,15 +10,18 @@ class Emitter
    */
   static from(log)
   {
-    return new Emitter(log)
+    const createPayload = Payload.from
+    return new Emitter(log, createPayload)
   }
 
   /**
    * @param {Logger} log
+   * @param {Payload~from} createPayload
    */
-  constructor(log)
+  constructor(log, createPayload)
   {
-    this.log = log
+    this.log            = log
+    this.createPayload  = createPayload
   }
 
   /**
@@ -32,7 +35,7 @@ class Emitter
 
     try
     {
-      const payload = Payload.from(event, data).toBuffer()
+      const payload = this.createPayload(event, data).toBuffer()
       await this.writeBufferToSocket(socket, payload)
     }
     catch(error)
