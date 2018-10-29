@@ -29,26 +29,26 @@ A simple example to get started follows.
 
 ```js
 const
-SocketServer  = require('./server'),
-SocketClient  = require('./client'),
-// Debug      = require('@superhero/debug'),
-// log        = new Debug({ debug:true }),
-log           = console,
-socketServer  = new SocketServer(log),
-socketClient  = new SocketClient(log),
-port          = 18200,
-event         = 'foobar',
-body          = { foo:'bar' }
+Server    = require('./server'),
+Client    = require('./client'),
+// Debug  = require('@superhero/debug'),
+// log    = new Debug({ debug:true }),
+log       = console,
+server    = Server.from(log),
+client    = Client.from(log),
+port      = 18200,
+event     = 'foobar',
+body      = { foo:'bar' }
 
-socketServer.listen(port)
-socketClient.connect(port)
+server.listen(port)
+client.connect(port)
 
-socketClient.emit(event, body)
-socketServer.on(event, (context, data) => context.emit(event, body))
-socketClient.on(event, (context, data) =>
+client.emit(event, body)
+server.on(event, (context, data) => context.emit(event, body))
+client.on(event, (context, data) =>
 {
   // if you need to close the connection, then...
-  socketClient.client.end()
-  socketServer.server.close()
+  client.client.end()
+  server.server.close()
 })
 ```
