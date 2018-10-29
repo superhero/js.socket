@@ -1,5 +1,21 @@
-class SocketPayload
+/**
+ * Represent a package of data to send over the network
+ */
+class Payload
 {
+  /**
+   * @param {string} event
+   * @param {*} data
+   */
+  static from(event, data)
+  {
+    return new Payload(event, data)
+  }
+
+  /**
+   * @param {string} event
+   * @param {*} data
+   */
   constructor(event, data)
   {
     this.event  = event
@@ -8,6 +24,9 @@ class SocketPayload
     Object.freeze(this)
   }
 
+  /**
+   * @returns {string} Stringified JSON
+   */
   toStringifiedJson()
   {
     const
@@ -17,12 +36,16 @@ class SocketPayload
     return JSON.stringify({ event, data })
   }
 
+  /**
+   * Composes a binary package with a header and body
+   * @returns {Buffer}
+   */
   toBuffer()
   {
     const
     dto     = this.toStringifiedJson(),
     body    = Buffer.from(dto),
-    header  = Buffer.alloc(SocketPayload.HEADER_SIZE)
+    header  = Buffer.alloc(Payload.HEADER_SIZE)
 
     header.writeInt32BE(body.length, 0)
 
@@ -30,6 +53,10 @@ class SocketPayload
   }
 }
 
-SocketPayload.HEADER_SIZE = 4
+/**
+ * The byte size of the header
+ * @const
+ */
+Payload.HEADER_SIZE = 4
 
-module.exports = SocketPayload
+module.exports = Object.freeze(Payload)

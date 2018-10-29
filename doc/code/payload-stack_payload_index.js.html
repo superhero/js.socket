@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Source: payload-stack/payload/index.js | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,70 +46,68 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
-
-/**
- * Responsible for emitting a message over the network
+            <pre class="prettyprint source linenums"><code>/**
+ * Represent a package of data to send over the network
  */
-class Emitter
+class Payload
 {
   /**
-   * @param {Logger} log
-   */
-  static from(log)
-  {
-    return new Emitter(log)
-  }
-
-  /**
-   * @param {Logger} log
-   */
-  constructor(log)
-  {
-    this.log = log
-  }
-
-  /**
-   * @param {net.Socket} socket
-   * @param {events} event
+   * @param {string} event
    * @param {*} data
    */
-  async emit(socket, event, data)
+  static from(event, data)
   {
-    this.log.info('emitting event:', event, 'data:', data)
-
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
-
-    this.log.info('emitted:', event, data)
+    return new Payload(event, data)
   }
 
   /**
-   * @protected
-   * @param {net.Socket} socket
-   * @param {Buffer} buffer
+   * @param {string} event
+   * @param {*} data
    */
-  writeBufferToSocket(socket, buffer)
+  constructor(event, data)
   {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
+    this.event  = event
+    this.data   = data
+
+    Object.freeze(this)
+  }
+
+  /**
+   * @returns {string} Stringified JSON
+   */
+  toStringifiedJson()
+  {
+    const
+    event = this.event,
+    data  = this.data
+
+    return JSON.stringify({ event, data })
+  }
+
+  /**
+   * Composes a binary package with a header and body
+   * @returns {Buffer}
+   */
+  toBuffer()
+  {
+    const
+    dto     = this.toStringifiedJson(),
+    body    = Buffer.from(dto),
+    header  = Buffer.alloc(Payload.HEADER_SIZE)
+
+    header.writeInt32BE(body.length, 0)
+
+    return Buffer.concat([header, body])
   }
 }
 
-module.exports = Emitter
+/**
+ * The byte size of the header
+ * @const
+ */
+Payload.HEADER_SIZE = 4
+
+module.exports = Object.freeze(Payload)
 </code></pre>
         </article>
     </section>

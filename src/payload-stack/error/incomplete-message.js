@@ -1,11 +1,15 @@
 /**
- * @extends Error
+ * Error message thrown when a payload holds a partial message
+ * @extends RangeError
  */
 class IncompleteMessageError extends RangeError
 {
-  constructor(msg, ...a)
+  /**
+   * @param {string} msg [optional]
+   */
+  constructor(msg = 'payload stack has an incomplete message', ...a)
   {
-    super(msg || 'payload stack has an incomplete message', ...a)
+    super(msg, ...a)
     this.code = 'ERR_INCOMPLETE_MESSAGE'
   }
 }

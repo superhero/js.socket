@@ -8,7 +8,7 @@ describe('Socket/PayloadStack/Payload', () =>
     event = 'foobar',
     data  = { foo:'bar' },
     SocketPayload = require('./index'),
-    socketPayload = new SocketPayload(event, data)
+    socketPayload = SocketPayload.from(event, data)
 
     socketPayload.event = 'barbaz'
 
@@ -21,7 +21,7 @@ describe('Socket/PayloadStack/Payload', () =>
     event = 'foobar',
     data  = { foo:'bar' },
     SocketPayload = require('./index'),
-    socketPayload = new SocketPayload(event, data)
+    socketPayload = SocketPayload.from(event, data)
 
     socketPayload.event = 'barbaz'
 
@@ -34,7 +34,7 @@ describe('Socket/PayloadStack/Payload', () =>
     event = 'foobar',
     data  = { foo:'bar' },
     SocketPayload = require('./index'),
-    socketPayload = new SocketPayload(event, data),
+    socketPayload = SocketPayload.from(event, data),
     buffer = socketPayload.toBuffer(),
     length = buffer.readInt32BE(0)
 

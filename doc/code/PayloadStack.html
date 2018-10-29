@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Class: PayloadStack | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -43,76 +41,452 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
+        <h2><span class="attribs"><span class="type-signature"></span></span>PayloadStack<span class="signature">(buffer)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Stacking payloads in a buffer. When you recieve a message through the
+network, it's added to the stack. As mesages can come in partial chunks,
+they need to be buffered until we have recieved the complete message.
+Messages can also be recieved in a batch of multiple messages, requiring an
+instance to segregate the message stack.</div>
+        
+    
+</header>
 
-/**
- * Responsible for emitting a message over the network
- */
-class Emitter
-{
-  /**
-   * @param {Logger} log
-   */
-  static from(log)
-  {
-    return new Emitter(log)
-  }
+<article>
+    
+        <div class="container-overview">
+        
+            
 
-  /**
-   * @param {Logger} log
-   */
-  constructor(log)
-  {
-    this.log = log
-  }
+<dt>
+    
+        <h4 class="name" id="PayloadStack">
+            
+                new <span class="type-signature"></span>PayloadStack<span class="signature">(buffer)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="payload-stack_index.js.html">payload-stack/index.js</a></code>,
+                <code><a href="payload-stack_index.js.html#line12">line 12</a></code>
+            </div>
+            
+        </h4>
 
-  /**
-   * @param {net.Socket} socket
-   * @param {events} event
-   * @param {*} data
-   */
-  async emit(socket, event, data)
-  {
-    this.log.info('emitting event:', event, 'data:', data)
+        
+    
+</dt>
+<dd>
 
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
+    
 
-    this.log.info('emitted:', event, data)
-  }
+    
 
-  /**
-   * @protected
-   * @param {net.Socket} socket
-   * @param {Buffer} buffer
-   */
-  writeBufferToSocket(socket, buffer)
-  {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
-  }
-}
+    
 
-module.exports = Emitter
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">initial buffer</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="push">
+            
+                <span class="type-signature"></span>push<span class="signature">(&hellip;buffer)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="payload-stack_index.js.html">payload-stack/index.js</a></code>,
+                <code><a href="payload-stack_index.js.html#line56">line 56</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Adds a buffer to the stack
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">buffers to add to the stack</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="shift">
+            
+                <span class="type-signature"></span>shift<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="payload-stack_index.js.html">payload-stack/index.js</a></code>,
+                <code><a href="payload-stack_index.js.html#line33">line 33</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Attempts to cut out the first message of the stack
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    <ul>
+            <li>
+
+    <div class="param-desc">
+    
+        ERR_OUT_OF_RANGE
+    
+    </div>
+
+</li>
+        
+            <li>
+
+    <div class="param-desc">
+    
+        ERR_INCOMPLETE_MESSAGE
+    
+    </div>
+
+</li>
+        </ul>
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -129,7 +503,7 @@ module.exports = Emitter
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'PayloadStack_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

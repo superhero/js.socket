@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: IncompleteMessageError | Socket</title>
+    <title>Class: Socket | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,9 +46,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>IncompleteMessageError<span class="signature">(msg)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Socket<span class="signature">(log, connectionObserver)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Error message thrown when a payload holds a partial message</div>
+            <div class="class-description">A facade to the socket connections dispatchers event bus</div>
         
     
 </header>
@@ -61,14 +61,14 @@
 
 <dt>
     
-        <h4 class="name" id="IncompleteMessageError">
+        <h4 class="name" id="Socket">
             
-                new <span class="type-signature"></span>IncompleteMessageError<span class="signature">(msg)</span><span class="type-signature"></span>
+                new <span class="type-signature"></span>Socket<span class="signature">(log, connectionObserver)</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="payload-stack_error_incomplete-message.js.html">payload-stack/error/incomplete-message.js</a></code>,
-                <code><a href="payload-stack_error_incomplete-message.js.html#line5">line 5</a></code>
+                <code><a href="socket.js.html">socket.js</a></code>,
+                <code><a href="socket.js.html#line4">line 4</a></code>
             </div>
             
         </h4>
@@ -102,8 +102,6 @@
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -114,13 +112,13 @@
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>log</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="Logger.html">Logger</a></span>
 
 
             
@@ -129,14 +127,31 @@
             
 
             
-                <td class="default">
-                
-                    payload stack has an incomplete message
-                
-                </td>
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>connectionObserver</code></td>
             
 
-            <td class="description last">[optional]</td>
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ConnectionObserver.html">ConnectionObserver</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -204,15 +219,143 @@
     
 
     
-        <h3 class="subsection-title">Extends</h3>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="on">
+            
+                <span class="type-signature"></span>on<span class="signature">(event, observer)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="socket.js.html">socket.js</a></code>,
+                <code><a href="socket.js.html#line20">line 20</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
 
+        
 
-    <ul>
-        <li>RangeError</li>
-    </ul>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
 
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>observer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
 
     
 
@@ -228,6 +371,345 @@
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="once">
+            
+                <span class="type-signature"></span>once<span class="signature">(event, observer)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="socket.js.html">socket.js</a></code>,
+                <code><a href="socket.js.html#line29">line 29</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>observer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="removeListener">
+            
+                <span class="type-signature"></span>removeListener<span class="signature">(event, observer)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="socket.js.html">socket.js</a></code>,
+                <code><a href="socket.js.html#line38">line 38</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>observer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
     
 
     
@@ -252,7 +734,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'IncompleteMessageError_sub'.replace(/"/g, '_');
+        var id = 'Socket_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

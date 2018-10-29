@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Source: context.js | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,70 +46,49 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
+            <pre class="prettyprint source linenums"><code>const PayloadStack = require('./payload-stack')
 
 /**
- * Responsible for emitting a message over the network
+ * The context class works a bit like a session. It keeps track of the socket
+ * used in the current dispatchment. It allows a controller to respond to the
+ * sender of the event.
  */
-class Emitter
+class Context
 {
   /**
-   * @param {Logger} log
+   * @param {net.Socket} socket
+   * @param {Emitter} emitter
    */
-  static from(log)
+  static from(socket, emitter)
   {
-    return new Emitter(log)
-  }
+    const
+    emit          = emitter.emit.bind(emitter, socket),
+    payloadStack  = PayloadStack.from(),
+    context       = new Context(socket, emit, payloadStack)
 
-  /**
-   * @param {Logger} log
-   */
-  constructor(log)
-  {
-    this.log = log
+    return context
   }
 
   /**
    * @param {net.Socket} socket
-   * @param {events} event
-   * @param {*} data
+   * @param {Context~emit} emit
+   * @param {PayloadStack} payloadStack
    */
-  async emit(socket, event, data)
+  constructor(socket, emit, payloadStack)
   {
-    this.log.info('emitting event:', event, 'data:', data)
-
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
-
-    this.log.info('emitted:', event, data)
-  }
-
-  /**
-   * @protected
-   * @param {net.Socket} socket
-   * @param {Buffer} buffer
-   */
-  writeBufferToSocket(socket, buffer)
-  {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
+    this.socket       = socket
+    this.emit         = emit
+    this.payloadStack = payloadStack
   }
 }
 
-module.exports = Emitter
+module.exports = Context
+
+/**
+ * @callback Context~emit
+ * @param {string} event
+ * @param {*} data
+ */
 </code></pre>
         </article>
     </section>

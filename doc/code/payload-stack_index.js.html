@@ -34,7 +34,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="IncompleteMessageError.html">IncompleteMessageError</a><div class="hidden" id="IncompleteMessageError_sub"></div></li></ul></div>
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Client.html">Client</a><div class="hidden" id="Client_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Client.html#.from">from</a></li><li><a href="Client.html#connect">connect</a></li><li><a href="Client.html#emit">emit</a></li><li><a href="Client.html#logClientEvents">logClientEvents</a></li><li><a href="Client.html#on">on</a></li><li><a href="Client.html#once">once</a></li><li><a href="Client.html#removeListener">removeListener</a></li></ul></div></li><li><a href="ConnectionObserver.html">ConnectionObserver</a><div class="hidden" id="ConnectionObserver_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ConnectionObserver.html#.from">from</a></li><li><a href="ConnectionObserver.html#attachDataEventToDispatcherWithAContext">attachDataEventToDispatcherWithAContext</a></li><li><a href="ConnectionObserver.html#logSocketEvents">logSocketEvents</a></li><li><a href="ConnectionObserver.html#onConnection">onConnection</a></li></ul></div></li><li><a href="Context.html">Context</a><div class="hidden" id="Context_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Context.html#.from">from</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Context.html#~emit">emit</a></li></ul></div></li><li><a href="Dispatcher.html">Dispatcher</a><div class="hidden" id="Dispatcher_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Dispatcher.html#.from">from</a></li><li><a href="Dispatcher.html#dispatch">dispatch</a></li><li><a href="Dispatcher.html#handleError">handleError</a></li><li><a href="Dispatcher.html#loopThroughContextBufferToDispatchEachMessageOneByOne">loopThroughContextBufferToDispatchEachMessageOneByOne</a></li></ul></div></li><li><a href="Emitter.html">Emitter</a><div class="hidden" id="Emitter_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Emitter.html#.from">from</a></li><li><a href="Emitter.html#emit">emit</a></li><li><a href="Emitter.html#writeBufferToSocket">writeBufferToSocket</a></li></ul></div></li><li><a href="IncompleteMessageError.html">IncompleteMessageError</a><div class="hidden" id="IncompleteMessageError_sub"></div></li><li><a href="Payload.html">Payload</a><div class="hidden" id="Payload_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Payload.html#.HEADER_SIZE">HEADER_SIZE</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Payload.html#.from">from</a></li><li><a href="Payload.html#toBuffer">toBuffer</a></li><li><a href="Payload.html#toStringifiedJson">toStringifiedJson</a></li></ul></div></li><li><a href="PayloadStack.html">PayloadStack</a><div class="hidden" id="PayloadStack_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="PayloadStack.html#push">push</a></li><li><a href="PayloadStack.html#shift">shift</a></li></ul></div></li><li><a href="Socket.html">Socket</a><div class="hidden" id="Socket_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Socket.html#on">on</a></li><li><a href="Socket.html#once">once</a></li><li><a href="Socket.html#removeListener">removeListener</a></li></ul></div></li><li><a href="SocketServer.html">SocketServer</a><div class="hidden" id="SocketServer_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="SocketServer.html#.from">from</a></li><li><a href="SocketServer.html#attachConnectionEventToObserver">attachConnectionEventToObserver</a></li><li><a href="SocketServer.html#listen">listen</a></li><li><a href="SocketServer.html#logServerEvents">logServerEvents</a></li><li><a href="SocketServer.html#on">on</a></li><li><a href="SocketServer.html#once">once</a></li><li><a href="SocketServer.html#removeListener">removeListener</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Interfaces</h3><ul><li><a href="Logger.html">Logger</a><div class="hidden" id="Logger_sub"><div class="member-type">Typedef</div><ul class="inner"><li><a href="Logger.html#~log">log</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -47,24 +47,41 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>const
-SocketPayload           = require('./payload'),
+Payload                 = require('./payload'),
 IncompleteMessageError  = require('./error/incomplete-message')
 
-class SocketPayloadStack
+/**
+ * Stacking payloads in a buffer. When you recieve a message through the
+ * network, it's added to the stack. As mesages can come in partial chunks,
+ * they need to be buffered until we have recieved the complete message.
+ * Messages can also be recieved in a batch of multiple messages, requiring an
+ * instance to segregate the message stack.
+ */
+class PayloadStack
 {
-  constructor()
+  static from()
   {
-    this.stack = Buffer.from('')
+    const buffer = Buffer.from('')
+    return new PayloadStack(buffer)
   }
 
   /**
+   * @param {Buffer} buffer initial buffer
+   */
+  constructor(buffer)
+  {
+    this.stack = buffer
+  }
+
+  /**
+   * Attempts to cut out the first message of the stack
    * @throws ERR_OUT_OF_RANGE
    * @throws ERR_INCOMPLETE_MESSAGE
    */
   shift()
   {
     const
-    headerSize  = SocketPayload.HEADER_SIZE,
+    headerSize  = Payload.HEADER_SIZE,
     dtoSize     = this.stack.readInt32BE(0),
     payloadSize = dtoSize + headerSize
 
@@ -77,16 +94,20 @@ class SocketPayloadStack
 
     this.stack  = this.stack.slice(payloadSize)
 
-    return new SocketPayload(dto.event, dto.data)
+    return new Payload(dto.event, dto.data)
   }
 
+  /**
+   * Adds a buffer to the stack
+   * @param {...Buffer} buffer buffers to add to the stack
+   */
   push(...buffer)
   {
     this.stack = Buffer.concat([this.stack, ...buffer])
   }
 }
 
-module.exports = SocketPayloadStack
+module.exports = PayloadStack
 </code></pre>
         </article>
     </section>

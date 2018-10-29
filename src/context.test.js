@@ -8,11 +8,11 @@ describe('Socket/Context', () =>
     Debug         = require('@superhero/debug'),
     log           = new Debug({ debug:false }),
     Emitter       = require('./emitter'),
-    emitter       = new Emitter(log),
+    emitter       = Emitter.from(log),
     NetSocket     = require('net').Socket,
     netSocket     = new NetSocket,
     SocketContext = require('./context'),
-    socketContext = new SocketContext(netSocket, emitter),
+    socketContext = SocketContext.from(netSocket, emitter),
     PayloadStack  = require('./payload-stack')
 
     expect(socketContext.socket).deep.equal(netSocket)

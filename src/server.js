@@ -1,41 +1,55 @@
 const
-NetServer         = require('net').Server,
-SocketConnection  = require('./connection')
+NetServer           = require('net').Server,
+Socket              = require('./socket'),
+ConnectionObserver  = require('./connection-observer')
 
-class SocketServer
+/**
+ * When a server needs to connect with another, one part must act as the
+ * listener. This class is representing that listener.
+ *
+ * @extends Socket
+ */
+class SocketServer extends Socket
 {
-  constructor(log)
+  /**
+   * @param {Logger} log
+   */
+  static from(log)
   {
-    this.log        = log
-    this.connection = new SocketConnection(log, this)
-    this.server     = new NetServer
+    const
+    netServer           = new NetServer,
+    connectionObserver  = ConnectionObserver.from(log),
+    server              = new SocketServer(log, connectionObserver, netServer)
 
-    this.logServerEvents(this.server, log)
+    return server
   }
 
+  /**
+   * @param {Logger} log
+   * @param {ConnectionObserver} connectionObserver
+   * @param {net.Server} server
+   */
+  constructor(log, connectionObserver, server)
+  {
+    super(log, connectionObserver)
+
+    this.server = server
+    this.logServerEvents(server, log)
+  }
+
+  /**
+   * @param {number} port an unsigned integer
+   */
   listen(port)
   {
     this.server.listen(port)
-    this.attachConnectionEventToObserver(this.server, this.connection)
-  }
-
-  on(...args)
-  {
-    this.connection.dispatcher.events.on(...args)
-  }
-
-  once(...args)
-  {
-    this.connection.dispatcher.events.once(...args)
-  }
-
-  removeListener(...args)
-  {
-    this.connection.dispatcher.events.removeListener(...args)
+    this.attachConnectionEventToObserver(this.server, this.connectionObserver)
   }
 
   /**
    * @protected
+   * @param {net.Server} server
+   * @param {Logger} log
    */
   logServerEvents(server, log)
   {
@@ -47,10 +61,13 @@ class SocketServer
 
   /**
    * @protected
+   * @param {net.Server} server
+   * @param {ConnectionObserver} connectionObserver
    */
-  attachConnectionEventToObserver(server, connection)
+  attachConnectionEventToObserver(server, connectionObserver)
   {
-    server.on('connection', connection.onConnection.bind(connection))
+    const observer = connectionObserver
+    server.on('connection', observer.onConnection.bind(observer))
   }
 }
 

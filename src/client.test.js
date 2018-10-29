@@ -8,9 +8,9 @@ describe('Socket/Client', () =>
     Debug         = require('@superhero/debug'),
     log           = new Debug({ debug:true }),
     SocketServer  = require('./server'),
-    socketServer  = new SocketServer(log),
+    socketServer  = SocketServer.from(log),
     SocketClient  = require('./client'),
-    socketClient  = new SocketClient(log),
+    socketClient  = SocketClient.from(log),
     port          = 18200,
     event         = 'foobar',
     body          = { foo:'bar' }
@@ -33,14 +33,14 @@ describe('Socket/Client', () =>
     Debug         = require('@superhero/debug'),
     log           = new Debug({ debug:false }),
     SocketClient  = require('./client'),
-    socketClient  = new SocketClient(log),
+    socketClient  = SocketClient.from(log),
     event         = 'foobar',
     listener      = () => {}
 
-    expect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
     socketClient.on(event, listener)
-    expect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(1)
+    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(1)
     socketClient.removeListener(event, listener)
-    expect(socketClient.connection.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
   })
 })

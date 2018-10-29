@@ -8,7 +8,7 @@ describe('Socket/Dispatcher', () =>
     Debug                   = require('@superhero/debug'),
     log                     = new Debug({ debug:false }),
     Dispatcher              = require('./dispatcher'),
-    dispatcher              = new Dispatcher(log),
+    dispatcher              = Dispatcher.from(log),
     IncompleteMessageError  = require('./payload-stack/error/incomplete-message'),
     incompleteMessageError  = new IncompleteMessageError,
     error                   = new Error,
@@ -25,18 +25,18 @@ describe('Socket/Dispatcher', () =>
     Debug             = require('@superhero/debug'),
     log               = new Debug({ debug:false }),
     SocketDispatcher  = require('./dispatcher'),
-    socketDispatcher  = new SocketDispatcher(log),
+    socketDispatcher  = SocketDispatcher.from(log),
     SocketPayload     = require('./payload-stack/payload'),
     event             = 'foobar',
     body              = { foo:'bar' },
-    buffer            = new SocketPayload(event, body).toBuffer(),
+    buffer            = SocketPayload.from(event, body).toBuffer(),
     SocketEmitter     = require('./emitter'),
-    socketEmitter     = new SocketEmitter(log),
+    socketEmitter     = SocketEmitter.from(log),
     port              = 18200,
     netClient         = require('net').createConnection({ port }),
     netServer         = require('net').createServer().listen(port),
     SocketContext     = require('./context'),
-    socketContext     = new SocketContext(netClient, socketEmitter)
+    socketContext     = SocketContext.from(netClient, socketEmitter)
 
     socketContext.payloadStack.push(buffer, buffer)
 

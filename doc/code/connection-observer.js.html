@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Source: connection-observer.js | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,70 +46,77 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
+            <pre class="prettyprint source linenums"><code>const
+Dispatcher  = require('./dispatcher'),
+Emitter     = require('./emitter'),
+Context     = require('./context')
 
 /**
- * Responsible for emitting a message over the network
+ * Responsible for attaching a dispacther to all data events on a socket
  */
-class Emitter
+class ConnectionObserver
 {
   /**
    * @param {Logger} log
    */
   static from(log)
   {
-    return new Emitter(log)
+    const
+    dispatcher  = Dispatcher.from(log),
+    emitter     = Emitter.from(log),
+    observer    = new ConnectionObserver(log, dispatcher, emitter)
+
+    return observer
   }
 
   /**
    * @param {Logger} log
+   * @param {Dispatcher} dispatcher
+   * @param {Emitter} emitter
    */
-  constructor(log)
+  constructor(log, dispatcher, emitter)
   {
-    this.log = log
+    this.log        = log
+    this.dispatcher = dispatcher
+    this.emitter    = emitter
   }
 
   /**
    * @param {net.Socket} socket
-   * @param {events} event
-   * @param {*} data
    */
-  async emit(socket, event, data)
+  onConnection(socket)
   {
-    this.log.info('emitting event:', event, 'data:', data)
-
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
-
-    this.log.info('emitted:', event, data)
+    this.logSocketEvents(socket, this.log)
+    const context = Context.from(socket, this.emitter)
+    this.attachDataEventToDispatcherWithAContext(socket, this.dispatcher, context)
   }
 
   /**
    * @protected
    * @param {net.Socket} socket
-   * @param {Buffer} buffer
+   * @param {Logger} log
    */
-  writeBufferToSocket(socket, buffer)
+  logSocketEvents(socket, log)
   {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
+    ['close','connection','drain','end','lookup','timeout']
+    .forEach((event) => socket.on(event, () => log.info('connection:', event)))
+
+    socket.on('error', (...a) => log.info('connection:', 'error', ...a))
+  }
+
+  /**
+   * @protected
+   * @param {net.Socket} socket
+   * @param {Dispatcher} dispatcher
+   * @param {Context} context
+   */
+  attachDataEventToDispatcherWithAContext(socket, dispatcher, context)
+  {
+    socket.on('data', dispatcher.dispatch.bind(dispatcher, context))
   }
 }
 
-module.exports = Emitter
+module.exports = ConnectionObserver
 </code></pre>
         </article>
     </section>

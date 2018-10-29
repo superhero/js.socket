@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: IncompleteMessageError | Socket</title>
+    <title>Class: Context | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,9 +46,11 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>IncompleteMessageError<span class="signature">(msg)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Context<span class="signature">(socket, emit, payloadStack)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Error message thrown when a payload holds a partial message</div>
+            <div class="class-description">The context class works a bit like a session. It keeps track of the socket
+used in the current dispatchment. It allows a controller to respond to the
+sender of the event.</div>
         
     
 </header>
@@ -61,14 +63,14 @@
 
 <dt>
     
-        <h4 class="name" id="IncompleteMessageError">
+        <h4 class="name" id="Context">
             
-                new <span class="type-signature"></span>IncompleteMessageError<span class="signature">(msg)</span><span class="type-signature"></span>
+                new <span class="type-signature"></span>Context<span class="signature">(socket, emit, payloadStack)</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="payload-stack_error_incomplete-message.js.html">payload-stack/error/incomplete-message.js</a></code>,
-                <code><a href="payload-stack_error_incomplete-message.js.html#line5">line 5</a></code>
+                <code><a href="context.js.html">context.js</a></code>,
+                <code><a href="context.js.html#line8">line 8</a></code>
             </div>
             
         </h4>
@@ -102,8 +104,6 @@
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -114,13 +114,13 @@
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>socket</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">net.Socket</span>
 
 
             
@@ -129,14 +129,54 @@
             
 
             
-                <td class="default">
-                
-                    payload stack has an incomplete message
-                
-                </td>
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>emit</code></td>
             
 
-            <td class="description last">[optional]</td>
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Context.html#~emit">Context~emit</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>payloadStack</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PayloadStack.html">PayloadStack</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -204,15 +244,143 @@
     
 
     
-        <h3 class="subsection-title">Extends</h3>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id=".from">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>from<span class="signature">(socket, emitter)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="context.js.html">context.js</a></code>,
+                <code><a href="context.js.html#line14">line 14</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
 
+        
 
-    <ul>
-        <li>RangeError</li>
-    </ul>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
 
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>socket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">net.Socket</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>emitter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Emitter.html">Emitter</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
 
     
 
@@ -230,6 +398,191 @@
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="~emit">
+            
+                <span class="type-signature"></span>emit<span class="signature">(event, data)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="context.js.html">context.js</a></code>,
+                <code><a href="context.js.html#line39">line 39</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
     
 
     
@@ -252,7 +605,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'IncompleteMessageError_sub'.replace(/"/g, '_');
+        var id = 'Context_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

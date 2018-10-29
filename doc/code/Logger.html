@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Interface: Logger | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -43,76 +41,314 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
+        <h2>Logger</h2>
+        
+    
+</header>
 
-/**
- * Responsible for emitting a message over the network
- */
-class Emitter
-{
-  /**
-   * @param {Logger} log
-   */
-  static from(log)
-  {
-    return new Emitter(log)
-  }
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description">The contract for a instance that logs</div>
+            
 
-  /**
-   * @param {Logger} log
-   */
-  constructor(log)
-  {
-    this.log = log
-  }
+            
 
-  /**
-   * @param {net.Socket} socket
-   * @param {events} event
-   * @param {*} data
-   */
-  async emit(socket, event, data)
-  {
-    this.log.info('emitting event:', event, 'data:', data)
 
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
+    <h5 class="subsection-title">Properties:</h5>
 
-    this.log.info('emitted:', event, data)
-  }
+    
 
-  /**
-   * @protected
-   * @param {net.Socket} socket
-   * @param {Buffer} buffer
-   */
-  writeBufferToSocket(socket, buffer)
-  {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
-  }
-}
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-module.exports = Emitter
-</code></pre>
-        </article>
-    </section>
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>info</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Logger.html#~log">Logger~log</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Logs information</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Logger.html#~log">Logger~log</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Logs errors</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="~log">
+            
+                <span class="type-signature"></span>log<span class="signature">(&hellip;msg)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="logger.js.html">logger.js</a></code>,
+                <code><a href="logger.js.html#line10">line 10</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>msg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -129,7 +365,7 @@ module.exports = Emitter
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'Logger_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

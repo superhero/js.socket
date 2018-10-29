@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: emitter.js | Socket</title>
+    <title>Source: socket.js | Socket</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,70 +46,50 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Payload = require('./payload-stack/payload')
-
-/**
- * Responsible for emitting a message over the network
+            <pre class="prettyprint source linenums"><code>/**
+ * A facade to the socket connections dispatchers event bus
  */
-class Emitter
+class Socket
 {
   /**
    * @param {Logger} log
+   * @param {ConnectionObserver} connectionObserver
    */
-  static from(log)
+  constructor(log, connectionObserver)
   {
-    return new Emitter(log)
+    this.log                = log
+    this.connectionObserver = connectionObserver
   }
 
   /**
-   * @param {Logger} log
+   * @param {string} event
+   * @param {function} observer
    */
-  constructor(log)
+  on(...args)
   {
-    this.log = log
+    this.connectionObserver.dispatcher.events.on(...args)
   }
 
   /**
-   * @param {net.Socket} socket
-   * @param {events} event
-   * @param {*} data
+   * @param {string} event
+   * @param {function} observer
    */
-  async emit(socket, event, data)
+  once(...args)
   {
-    this.log.info('emitting event:', event, 'data:', data)
-
-    try
-    {
-      const payload = Payload.from(event, data).toBuffer()
-      await this.writeBufferToSocket(socket, payload)
-    }
-    catch(error)
-    {
-      this.log.info('error emitting:', event, data, error)
-      throw error
-    }
-
-    this.log.info('emitted:', event, data)
+    this.connectionObserver.dispatcher.events.once(...args)
   }
 
   /**
-   * @protected
-   * @param {net.Socket} socket
-   * @param {Buffer} buffer
+   * @param {string} event
+   * @param {function} observer
    */
-  writeBufferToSocket(socket, buffer)
+  removeListener(...args)
   {
-    return new Promise(
-      (accept, reject) =>
-        socket.write(
-          buffer,
-          (error) => error
-            ? reject(error)
-            : accept()))
+    this.connectionObserver.dispatcher.events.removeListener(...args)
   }
 }
 
-module.exports = Emitter
+module.exports = Socket
 </code></pre>
         </article>
     </section>

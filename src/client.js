@@ -1,58 +1,73 @@
 const
-NetClient         = require('net').Socket,
-SocketConnection  = require('./connection')
+NetSocket          = require('net').Socket,
+Socket             = require('./socket'),
+ConnectionObserver = require('./connection-observer')
 
-class SocketClient
+/**
+ * When a server needs to connect with another, a client connection needs to be
+ * esablished. This class is representing that client.
+ *
+ * @extends Socket
+ */
+class Client extends Socket
 {
-  constructor(log)
+  /**
+   * @param {Logger} log
+   */
+  static from(log)
   {
-    this.log        = log
-    this.connection = new SocketConnection(log, this)
-    this.client     = new NetClient(
-    {
-      readable: true,
-      writable: true
-    })
+    const
+    observer  = ConnectionObserver.from(log),
+    netSocket = new NetSocket({ readable:true, writable:true }),
+    client    = new Client(log, observer, netSocket)
 
-    this.logClientEvents(this.client, log)
+    return client
   }
 
+  /**
+   * @param {Logger} log
+   * @param {ConnectionObserver} connectionObserver
+   * @param {net.Socket} client
+   */
+  constructor(log, connectionObserver, client)
+  {
+    super(log, connectionObserver)
+
+    this.client = client
+    this.logClientEvents(client, log)
+  }
+
+  /**
+   * @param {number} port an unsigned integer
+   * @param {string} host the host address to connect to
+   */
   connect(port, host)
   {
     const
-    connection  = this.connection,
-    client      = this.client,
-    callback    = connection.onConnection.bind(connection, client)
+    observer  = this.connectionObserver,
+    client    = this.client,
+    callback  = observer.onConnection.bind(observer, client)
 
     this.client.connect(port, host, callback)
   }
 
+  /**
+   * @param {string} event
+   * @param {*} data
+   */
   async emit(...args)
   {
     const
-    emitter = this.connection.emitter,
+    emitter = this.connectionObserver.emitter,
     client  = this.client
 
     await emitter.emit(client, ...args)
   }
 
-  on(...args)
-  {
-    this.connection.dispatcher.events.on(...args)
-  }
-
-  once(...args)
-  {
-    this.connection.dispatcher.events.once(...args)
-  }
-
-  removeListener(...args)
-  {
-    this.connection.dispatcher.events.removeListener(...args)
-  }
-
   /**
    * @protected
+   * @param {net.Socket} client
+   * @param {Logger} log
    */
   logClientEvents(client, log)
   {
@@ -63,4 +78,4 @@ class SocketClient
   }
 }
 
-module.exports = SocketClient
+module.exports = Client

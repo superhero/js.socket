@@ -1,13 +1,33 @@
 const Events = require('events')
 
-class SocketDispatcher
+/**
+ * Responsible for dispatching events from the payload stack
+ */
+class Dispatcher
 {
-  constructor(log)
+  /**
+   * @param {Logger} log
+   */
+  static from(log)
   {
-    this.log    = log
-    this.events = new Events
+    const events = new Events
+    return new Dispatcher(log, events)
   }
 
+  /**
+   * @param {Logger} log
+   * @param {events} events
+   */
+  constructor(log, events)
+  {
+    this.log    = log
+    this.events = events
+  }
+
+  /**
+   * @param {Context} context
+   * @param {Buffer} buffer
+   */
   dispatch(context, buffer)
   {
     this.log.info('data')
@@ -17,6 +37,7 @@ class SocketDispatcher
 
   /**
    * @protected
+   * @param {Context} context
    */
   loopThroughContextBufferToDispatchEachMessageOneByOne(context)
   {
@@ -36,6 +57,7 @@ class SocketDispatcher
 
   /**
    * @protected
+   * @param {Error} error
    */
   handleError(error)
   {
@@ -48,4 +70,4 @@ class SocketDispatcher
   }
 }
 
-module.exports = SocketDispatcher
+module.exports = Dispatcher

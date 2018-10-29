@@ -1,19 +1,38 @@
-const SocketPayload = require('./payload-stack/payload')
+const Payload = require('./payload-stack/payload')
 
-class SocketEmitter
+/**
+ * Responsible for emitting a message over the network
+ */
+class Emitter
 {
+  /**
+   * @param {Logger} log
+   */
+  static from(log)
+  {
+    return new Emitter(log)
+  }
+
+  /**
+   * @param {Logger} log
+   */
   constructor(log)
   {
     this.log = log
   }
 
+  /**
+   * @param {net.Socket} socket
+   * @param {events} event
+   * @param {*} data
+   */
   async emit(socket, event, data)
   {
     this.log.info('emitting event:', event, 'data:', data)
 
     try
     {
-      const payload = new SocketPayload(event, data).toBuffer()
+      const payload = Payload.from(event, data).toBuffer()
       await this.writeBufferToSocket(socket, payload)
     }
     catch(error)
@@ -27,6 +46,8 @@ class SocketEmitter
 
   /**
    * @protected
+   * @param {net.Socket} socket
+   * @param {Buffer} buffer
    */
   writeBufferToSocket(socket, buffer)
   {
@@ -40,4 +61,4 @@ class SocketEmitter
   }
 }
 
-module.exports = SocketEmitter
+module.exports = Emitter

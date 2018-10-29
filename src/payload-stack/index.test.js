@@ -6,11 +6,11 @@ describe('Socket/PayloadStack', () =>
   {
     const
     SocketPayloadStack  = require('./index'),
-    socketPayloadStack  = new SocketPayloadStack,
+    socketPayloadStack  = SocketPayloadStack.from(),
     foo                 = 'foobar',
     data                = { foo:'bar' },
     SocketPayload       = require('./payload'),
-    socketPayload       = new SocketPayload(foo, data),
+    socketPayload       = SocketPayload.from(foo, data),
     buffer              = socketPayload.toBuffer()
 
     socketPayloadStack.push(buffer)
@@ -25,11 +25,11 @@ describe('Socket/PayloadStack', () =>
   {
     const
     SocketPayloadStack  = require('./index'),
-    socketPayloadStack  = new SocketPayloadStack,
+    socketPayloadStack  = SocketPayloadStack.from(),
     event               = 'foobar',
     data                = { foo:'bar' },
     SocketPayload       = require('./payload'),
-    socketPayload       = new SocketPayload(event, data),
+    socketPayload       = SocketPayload.from(event, data),
     buffer              = socketPayload.toBuffer().slice(20),
     callback            = socketPayloadStack.shift.bind(socketPayloadStack)
 
