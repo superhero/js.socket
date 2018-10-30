@@ -1,4 +1,4 @@
-describe('Socket/Dispatcher', () =>
+describe('Dispatcher', () =>
 {
   const expect = require('chai').expect
 

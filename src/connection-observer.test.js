@@ -1,4 +1,4 @@
-describe('Socket/ConnectionObserver', () =>
+describe('ConnectionObserver', () =>
 {
   const expect = require('chai').expect
 

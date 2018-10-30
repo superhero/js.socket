@@ -1,6 +1,7 @@
 /**
  * Error message thrown when a payload holds a partial message
  * @extends RangeError
+ * @alias Payload/IncompleteMessageError
  */
 class IncompleteMessageError extends RangeError
 {

@@ -1,4 +1,4 @@
-describe('Socket/PayloadStack', () =>
+describe('PayloadStack', () =>
 {
   const expect = require('chai').expect
 

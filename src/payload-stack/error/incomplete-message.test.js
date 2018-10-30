@@ -1,4 +1,4 @@
-describe('Socket/Payload/Error/IncompleteMessage', () =>
+describe('Payload/Error/IncompleteMessage', () =>
 {
   const expect = require('chai').expect
 
