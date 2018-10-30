@@ -5,24 +5,24 @@ describe('Client', () =>
   it('integration test between client and server', (done) =>
   {
     const
-    Debug         = require('@superhero/debug'),
-    log           = new Debug({ debug:false }),
-    SocketServer  = require('./server'),
-    socketServer  = SocketServer.from(log),
-    SocketClient  = require('./client'),
-    socketClient  = SocketClient.from(log),
-    port          = 18200,
-    event         = 'foobar',
-    body          = { foo:'bar' }
+    Debug   = require('@superhero/debug'),
+    log     = new Debug({ debug:false }),
+    Server  = require('./server'),
+    server  = Server.from(log),
+    Client  = require('./client'),
+    client  = Client.from(log),
+    port    = 18200,
+    event   = 'foobar',
+    body    = { foo:'bar' }
 
-    socketServer.listen(port)
-    socketClient.connect(port)
-    socketClient.emit(event, body)
-    socketServer.on(event, (context, data) =>
+    server.listen(port)
+    client.connect(port)
+    client.emit(event, body)
+    server.on(event, (context, data) =>
     {
       expect(data).to.deep.equal(body)
-      socketClient.client.end()
-      socketServer.server.close()
+      client.client.end()
+      server.server.close()
       done()
     })
   })
@@ -30,17 +30,17 @@ describe('Client', () =>
   it('possible to remove a listener', () =>
   {
     const
-    Debug         = require('@superhero/debug'),
-    log           = new Debug({ debug:false }),
-    SocketClient  = require('./client'),
-    socketClient  = SocketClient.from(log),
-    event         = 'foobar',
-    listener      = () => {}
+    Debug     = require('@superhero/debug'),
+    log       = new Debug({ debug:false }),
+    Client    = require('./client'),
+    client    = Client.from(log),
+    event     = 'foobar',
+    listener  = () => {}
 
-    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
-    socketClient.on(event, listener)
-    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(1)
-    socketClient.removeListener(event, listener)
-    expect(socketClient.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    expect(client.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    client.on(event, listener)
+    expect(client.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(1)
+    client.removeListener(event, listener)
+    expect(client.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
   })
 })

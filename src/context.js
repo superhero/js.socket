@@ -8,6 +8,12 @@ const PayloadStack = require('./payload-stack')
 class Context
 {
   /**
+   * @callback Context~emit
+   * @param {string} event
+   * @param {*} data
+   */
+
+  /**
    * @callback Context~from
    * @param {net.Socket} socket
    * @param {Emitter} emitter
@@ -36,9 +42,3 @@ class Context
 }
 
 module.exports = Context
-
-/**
- * @callback Context~emit
- * @param {string} event
- * @param {*} data
- */

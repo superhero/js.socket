@@ -5,35 +5,35 @@ describe('PayloadStack', () =>
   it('push and shift message from buffer stack', () =>
   {
     const
-    SocketPayloadStack  = require('./index'),
-    socketPayloadStack  = SocketPayloadStack.from(),
-    foo                 = 'foobar',
-    data                = { foo:'bar' },
-    SocketPayload       = require('./payload'),
-    socketPayload       = SocketPayload.from(foo, data),
-    buffer              = socketPayload.toBuffer()
+    PayloadStack  = require('./index'),
+    payloadStack  = PayloadStack.from(),
+    foo           = 'foobar',
+    data          = { foo:'bar' },
+    Payload       = require('./payload'),
+    payload       = Payload.from(foo, data),
+    buffer        = payload.toBuffer()
 
-    socketPayloadStack.push(buffer)
-    const message = socketPayloadStack.shift()
+    payloadStack.push(buffer)
+    const message = payloadStack.shift()
 
     expect(message.event).to.be.equal(foo)
     expect(message.data).deep.equal(data)
-    expect(socketPayloadStack.stack.length).to.be.equal(0)
+    expect(payloadStack.stack.length).to.be.equal(0)
   })
 
   it('shift a message from the buffer stack that holds a broken message', () =>
   {
     const
-    SocketPayloadStack  = require('./index'),
-    socketPayloadStack  = SocketPayloadStack.from(),
-    event               = 'foobar',
-    data                = { foo:'bar' },
-    SocketPayload       = require('./payload'),
-    socketPayload       = SocketPayload.from(event, data),
-    buffer              = socketPayload.toBuffer().slice(20),
-    callback            = socketPayloadStack.shift.bind(socketPayloadStack)
+    PayloadStack  = require('./index'),
+    payloadStack  = PayloadStack.from(),
+    event         = 'foobar',
+    data          = { foo:'bar' },
+    Payload       = require('./payload'),
+    payload       = Payload.from(event, data),
+    buffer        = payload.toBuffer().slice(20),
+    callback      = payloadStack.shift.bind(payloadStack)
 
-    socketPayloadStack.push(buffer)
+    payloadStack.push(buffer)
 
     expect(callback).to.throw(Error).with.property('code', 'ERR_INCOMPLETE_MESSAGE')
   })

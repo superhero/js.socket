@@ -7,10 +7,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    Events              = require('events'),
-    events              = new Events,
     ConnectionObserver  = require('./connection-observer'),
-    connectionObserver  = ConnectionObserver.from(log, events),
+    connectionObserver  = ConnectionObserver.from(log),
     NetSocket           = require('net').Socket,
     netSocket           = new NetSocket,
     dispatcher          = connectionObserver.dispatcher,
@@ -28,10 +26,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    Events              = require('events'),
-    events              = new Events,
     ConnectionObserver  = require('./connection-observer'),
-    connectionObserver  = ConnectionObserver.from(log, events),
+    connectionObserver  = ConnectionObserver.from(log),
     NetSocket           = require('net').Socket,
     netSocket           = new NetSocket,
     emitter             = connectionObserver.emitter
@@ -50,10 +46,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    Events              = require('events'),
-    events              = new Events,
     ConnectionObserver  = require('./connection-observer'),
-    connectionObserver  = ConnectionObserver.from(log, events),
+    connectionObserver  = ConnectionObserver.from(log),
     NetSocket           = require('net').Socket,
     netSocket           = new NetSocket
 

@@ -11,12 +11,12 @@ describe('Context', () =>
     emitter       = Emitter.from(log),
     NetSocket     = require('net').Socket,
     netSocket     = new NetSocket,
-    SocketContext = require('./context'),
-    socketContext = SocketContext.from(netSocket, emitter),
+    Context       = require('./context'),
+    context       = Context.from(netSocket, emitter),
     PayloadStack  = require('./payload-stack')
 
-    expect(socketContext.socket).deep.equal(netSocket)
-    expect(socketContext.emit).to.be.a('function')
-    expect(socketContext.payloadStack).to.be.an.instanceof(PayloadStack)
+    expect(context.socket).deep.equal(netSocket)
+    expect(context.emit).to.be.a('function')
+    expect(context.payloadStack).to.be.an.instanceof(PayloadStack)
   })
 })

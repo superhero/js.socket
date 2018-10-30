@@ -37,17 +37,17 @@ describe('Server', () =>
   it('possible to remove a listener', () =>
   {
     const
-    Debug         = require('@superhero/debug'),
-    log           = new Debug({ debug:false }),
-    SocketServer  = require('./server'),
-    socketServer  = SocketServer.from(log),
-    event         = 'foobar',
-    listener      = () => {}
+    Debug     = require('@superhero/debug'),
+    log       = new Debug({ debug:false }),
+    Server    = require('./server'),
+    server    = Server.from(log),
+    event     = 'foobar',
+    listener  = () => {}
 
-    expect(socketServer.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
-    socketServer.on(event, listener)
-    expect(socketServer.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(1)
-    socketServer.removeListener(event, listener)
-    expect(socketServer.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    expect(server.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
+    server.on(event, listener)
+    expect(server.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(1)
+    server.removeListener(event, listener)
+    expect(server.connectionObserver.dispatcher.events.listenerCount(event)).to.deep.equal(0)
   })
 })

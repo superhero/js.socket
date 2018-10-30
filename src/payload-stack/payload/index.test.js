@@ -5,39 +5,39 @@ describe('Payload', () =>
   it('is mutable', () =>
   {
     const
-    event = 'foobar',
-    data  = { foo:'bar' },
-    SocketPayload = require('./index'),
-    socketPayload = SocketPayload.from(event, data)
+    event   = 'foobar',
+    data    = { foo:'bar' },
+    Payload = require('./index'),
+    payload = Payload.from(event, data)
 
-    socketPayload.event = 'barbaz'
+    payload.event = 'barbaz'
 
-    expect(socketPayload.event).to.be.equal(event)
+    expect(payload.event).to.be.equal(event)
   })
 
   it('can be represented as a buffer', () =>
   {
     const
-    event = 'foobar',
-    data  = { foo:'bar' },
-    SocketPayload = require('./index'),
-    socketPayload = SocketPayload.from(event, data)
+    event   = 'foobar',
+    data    = { foo:'bar' },
+    Payload = require('./index'),
+    payload = Payload.from(event, data)
 
-    socketPayload.event = 'barbaz'
+    payload.event = 'barbaz'
 
-    expect(socketPayload.toBuffer.bind(socketPayload)).to.not.throw()
+    expect(payload.toBuffer.bind(payload)).to.not.throw()
   })
 
   it('buffer has a header that describes the correct length of the buffer', () =>
   {
     const
-    event = 'foobar',
-    data  = { foo:'bar' },
-    SocketPayload = require('./index'),
-    socketPayload = SocketPayload.from(event, data),
-    buffer = socketPayload.toBuffer(),
-    length = buffer.readInt32BE(0)
+    event   = 'foobar',
+    data    = { foo:'bar' },
+    Payload = require('./index'),
+    payload = Payload.from(event, data),
+    buffer  = payload.toBuffer(),
+    length  = buffer.readInt32BE(0)
 
-    expect(SocketPayload.HEADER_SIZE + length).to.be.equal(buffer.length)
+    expect(Payload.HEADER_SIZE + length).to.be.equal(buffer.length)
   })
 })

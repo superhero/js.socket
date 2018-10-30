@@ -22,28 +22,28 @@ describe('Dispatcher', () =>
   it('loop through context buffer to dispatch each message one by one', (done) =>
   {
     const
-    Debug             = require('@superhero/debug'),
-    log               = new Debug({ debug:false }),
-    SocketDispatcher  = require('./dispatcher'),
-    socketDispatcher  = SocketDispatcher.from(log),
-    SocketPayload     = require('./payload-stack/payload'),
-    event             = 'foobar',
-    body              = { foo:'bar' },
-    buffer            = SocketPayload.from(event, body).toBuffer(),
-    SocketEmitter     = require('./emitter'),
-    socketEmitter     = SocketEmitter.from(log),
-    port              = 18200,
-    netClient         = require('net').createConnection({ port }),
-    netServer         = require('net').createServer().listen(port),
-    SocketContext     = require('./context'),
-    socketContext     = SocketContext.from(netClient, socketEmitter)
+    Debug       = require('@superhero/debug'),
+    log         = new Debug({ debug:false }),
+    Dispatcher  = require('./dispatcher'),
+    dispatcher  = Dispatcher.from(log),
+    Payload     = require('./payload-stack/payload'),
+    event       = 'foobar',
+    body        = { foo:'bar' },
+    buffer      = Payload.from(event, body).toBuffer(),
+    Emitter     = require('./emitter'),
+    emitter     = Emitter.from(log),
+    port        = 18200,
+    netClient   = require('net').createConnection({ port }),
+    netServer   = require('net').createServer().listen(port),
+    Context     = require('./context'),
+    context     = Context.from(netClient, emitter)
 
-    socketContext.payloadStack.push(buffer, buffer)
+    context.payloadStack.push(buffer, buffer)
 
-    netClient.on('connect', () => socketDispatcher.loopThroughContextBufferToDispatchEachMessageOneByOne(socketContext))
+    netClient.on('connect', () => dispatcher.loopThroughContextBufferToDispatchEachMessageOneByOne(context))
 
     let i = 0
-    socketDispatcher.events.on(event, (context, data) =>
+    dispatcher.events.on(event, (context, data) =>
     {
       if(++i === 2)
       {
