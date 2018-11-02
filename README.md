@@ -29,13 +29,12 @@ A simple example to get started follows.
 
 ```js
 const
-Server    = require('./server'),
-Client    = require('./client'),
+socket    = require('@superhero/socket'),
 // Debug  = require('@superhero/debug'),
 // log    = new Debug({ debug:true }),
 log       = console,
-server    = Server.from(log),
-client    = Client.from(log),
+server    = socket.createServer(log),
+client    = socket.createClient(log),
 port      = 18200,
 event     = 'foobar',
 body      = { foo:'bar' }

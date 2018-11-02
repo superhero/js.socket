@@ -94,6 +94,7 @@ class Dispatcher
       while(context.payloadStack.stack.length)
       {
         const dto = context.payloadStack.shift()
+        this.log.info('trigger:', dto.event, dto.data)
         this.events.emit(dto.event, context, dto.data)
       }
     }

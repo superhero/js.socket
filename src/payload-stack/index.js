@@ -1,5 +1,5 @@
 const
-Payload                 = require('./payload'),
+PAYLOAD_HEADER_SIZE     = require('../payload').HEADER_SIZE,
 IncompleteMessageError  = require('./error/incomplete-message')
 
 /**
@@ -11,18 +11,14 @@ IncompleteMessageError  = require('./error/incomplete-message')
  */
 class PayloadStack
 {
-  static from()
-  {
-    const buffer = Buffer.from('')
-    return new PayloadStack(buffer)
-  }
-
   /**
    * @param {Buffer} buffer initial buffer
+   * @param {PayloadFactory} payloadFactory
    */
-  constructor(buffer)
+  constructor(buffer, payloadFactory)
   {
-    this.stack = buffer
+    this.stack          = buffer
+    this.payloadFactory = payloadFactory
   }
 
   /**
@@ -33,20 +29,20 @@ class PayloadStack
   shift()
   {
     const
-    headerSize  = Payload.HEADER_SIZE,
     dtoSize     = this.stack.readInt32BE(0),
-    payloadSize = dtoSize + headerSize
+    payloadSize = dtoSize + PAYLOAD_HEADER_SIZE
 
     if(this.stack.length < payloadSize)
       throw new IncompleteMessageError
 
     const
-    payload = this.stack.slice(headerSize, payloadSize).toString(),
-    dto     = JSON.parse(payload)
+    buffer  = this.stack.slice(PAYLOAD_HEADER_SIZE, payloadSize),
+    dto     = JSON.parse(buffer.toString()),
+    payload = this.payloadFactory.create(dto.event, dto.data)
 
-    this.stack  = this.stack.slice(payloadSize)
+    this.stack = this.stack.slice(payloadSize)
 
-    return new Payload(dto.event, dto.data)
+    return payload
   }
 
   /**

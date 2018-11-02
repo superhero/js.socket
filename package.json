@@ -1,6 +1,6 @@
 {
   "name": "@superhero/socket",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "TCP socket connection, client and server",
   "repository": "git@github.com:superhero/js.socket.git",
   "main": "index.js",
@@ -21,7 +21,8 @@
     "generate-doc-coverage": "nyc report --reporter=html --report-dir=./doc/coverage",
     "generate-doc-tests": "mocha './src/**/*.test.js' --reporter mochawesome --reporter-options reportDir=doc/tests,reportFilename=index,showHooks=always",
     "generate-doc-jsdoc": "jsdoc src -c './jsdoc.json'",
-    "test": "syntax-check && nyc mocha './src/**/*.test.js'"
+    "test": "nyc mocha './src/**/*.test.js'",
+    "tester": "syntax-check && nyc mocha './src/**/*.test.js'"
   },
   "devDependencies": {
     "@superhero/debug": "1.1.11",
