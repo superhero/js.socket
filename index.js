@@ -1,4 +1,4 @@
-module.exports = new class
+class SocketFactory
 {
   createClient(log)
   {
@@ -143,3 +143,5 @@ module.exports = new class
     return eventsFactory
   }
 }
+
+module.exports = SocketFactory

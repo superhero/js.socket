@@ -5,7 +5,8 @@ describe('Server', () =>
   it('integration test between server and client', (done) =>
   {
     const
-    factory = require('../../'),
+    Factory = require('../../'),
+    factory = new Factory,
     Debug   = require('@superhero/debug'),
     log     = new Debug({ debug:false }),
     client  = factory.createClient(log),
@@ -36,7 +37,8 @@ describe('Server', () =>
   it('possible to remove a listener', () =>
   {
     const
-    factory   = require('../../'),
+    Factory   = require('../../'),
+    factory   = new Factory,
     Debug     = require('@superhero/debug'),
     log       = new Debug({ debug:false }),
     server    = factory.createServer(log),

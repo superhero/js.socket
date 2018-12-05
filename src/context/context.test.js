@@ -7,7 +7,8 @@ describe('Context', () =>
     const
     Debug         = require('@superhero/debug'),
     log           = new Debug({ debug:false }),
-    factory       = require('../../'),
+    Factory       = require('../../'),
+    factory       = new Factory,
     emitter       = factory.createEmitterFactory(log).create(),
     netSocket     = factory.createNetSocket(),
     context       = factory.createContextFactory(log).create(netSocket, emitter),

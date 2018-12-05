@@ -7,7 +7,8 @@ describe('Emitter', () =>
     const
     Debug     = require('@superhero/debug'),
     log       = new Debug({ debug:false }),
-    factory   = require('../../'),
+    Factory   = require('../../'),
+    factory   = new Factory,
     emitter   = factory.createEmitterFactory(log).create(),
     port      = 18200,
     netClient = require('net').createConnection({ port }),
@@ -35,7 +36,8 @@ describe('Emitter', () =>
   it('emit event with data', (done) =>
   {
     const
-    factory       = require('../../'),
+    Factory       = require('../../'),
+    factory       = new Factory,
     payloadStack  = factory.createPayloadStackFactory().create(),
     Debug         = require('@superhero/debug'),
     log           = new Debug({ debug:false }),

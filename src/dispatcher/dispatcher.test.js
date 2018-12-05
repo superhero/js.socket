@@ -7,7 +7,8 @@ describe('Dispatcher', () =>
     const
     Debug                   = require('@superhero/debug'),
     log                     = new Debug({ debug:false }),
-    factory                 = require('../../'),
+    Factory                 = require('../../'),
+    factory                 = new Factory,
     dispatcher              = factory.createDispatcherFactory(log).create(),
     IncompleteMessageError  = require('../payload-stack/error/incomplete-message'),
     incompleteMessageError  = new IncompleteMessageError,
@@ -24,7 +25,8 @@ describe('Dispatcher', () =>
     const
     Debug           = require('@superhero/debug'),
     log             = new Debug({ debug:false }),
-    factory         = require('../../'),
+    Factory         = require('../../'),
+    factory         = new Factory,
     dispatcher      = factory.createDispatcherFactory(log).create(),
     payloadFactory  = factory.createPayloadFactory(),
     event           = 'foobar',

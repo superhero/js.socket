@@ -5,7 +5,8 @@ describe('PayloadStack', () =>
   it('push and shift message from buffer stack', () =>
   {
     const
-    factory       = require('../../'),
+    Factory       = require('../../'),
+    factory       = new Factory,
     payloadStack  = factory.createPayloadStackFactory().create(),
     foo           = 'foobar',
     data          = { foo:'bar' },
@@ -23,7 +24,8 @@ describe('PayloadStack', () =>
   it('shift a message from the buffer stack that holds a broken message', () =>
   {
     const
-    factory       = require('../../'),
+    Factory       = require('../../'),
+    factory       = new Factory,
     payloadStack  = factory.createPayloadStackFactory().create(),
     event         = 'foobar',
     data          = { foo:'bar' },

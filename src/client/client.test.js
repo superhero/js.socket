@@ -7,7 +7,8 @@ describe('Client', () =>
     const
     Debug   = require('@superhero/debug'),
     log     = new Debug({ debug:false }),
-    factory = require('../../'),
+    Factory = require('../../'),
+    factory = new Factory,
     client  = factory.createClient(log),
     server  = factory.createServer(log),
     port    = 18200,
@@ -31,7 +32,8 @@ describe('Client', () =>
     const
     Debug     = require('@superhero/debug'),
     log       = new Debug({ debug:false }),
-    factory   = require('../../'),
+    Factory   = require('../../'),
+    factory   = new Factory,
     client    = factory.createClient(log),
     event     = 'foobar',
     listener  = () => {}

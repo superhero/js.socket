@@ -7,7 +7,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    factory             = require('../../'),
+    Factory             = require('../../'),
+    factory             = new Factory,
     connectionObserver  = factory.createConnectionObserverFactory(log).create(),
     netSocket           = factory.createNetSocket(),
     dispatcher          = connectionObserver.dispatcher,
@@ -24,7 +25,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    factory             = require('../../'),
+    Factory             = require('../../'),
+    factory             = new Factory,
     connectionObserver  = factory.createConnectionObserverFactory(log).create(),
     netSocket           = factory.createNetSocket(),
     emitter             = connectionObserver.emitter
@@ -43,7 +45,8 @@ describe('ConnectionObserver', () =>
     const
     Debug               = require('@superhero/debug'),
     log                 = new Debug({ debug:false }),
-    factory             = require('../../'),
+    Factory             = require('../../'),
+    factory             = new Factory,
     connectionObserver  = factory.createConnectionObserverFactory(log).create(),
     netSocket           = factory.createNetSocket()
 

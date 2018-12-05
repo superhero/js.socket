@@ -29,15 +29,16 @@ A simple example to get started follows.
 
 ```js
 const
-socket    = require('@superhero/socket'),
-// Debug  = require('@superhero/debug'),
-// log    = new Debug({ debug:true }),
-log       = console,
-server    = socket.createServer(log),
-client    = socket.createClient(log),
-port      = 18200,
-event     = 'foobar',
-body      = { foo:'bar' }
+SocketFactory = require('@superhero/socket'),
+socketFactory = new SocketFactory,
+// Debug      = require('@superhero/debug'),
+// log        = new Debug({ debug:true }),
+log           = console,
+server        = socket.createServer(log),
+client        = socket.createClient(log),
+port          = 18200,
+event         = 'foobar',
+body          = { foo:'bar' }
 
 server.listen(port)
 client.connect(port)

@@ -7,7 +7,8 @@ describe('Payload', () =>
     const
     event   = 'foobar',
     data    = { foo:'bar' },
-    factory = require('../../'),
+    Factory = require('../../'),
+    factory = new Factory,
     payload = factory.createPayloadFactory().create(event, data)
 
     payload.event = 'barbaz'
@@ -20,7 +21,8 @@ describe('Payload', () =>
     const
     event   = 'foobar',
     data    = { foo:'bar' },
-    factory = require('../../'),
+    Factory = require('../../'),
+    factory = new Factory,
     payload = factory.createPayloadFactory().create(event, data)
 
     payload.event = 'barbaz'
@@ -33,7 +35,8 @@ describe('Payload', () =>
     const
     event   = 'foobar',
     data    = { foo:'bar' },
-    factory = require('../../'),
+    Factory = require('../../'),
+    factory = new Factory,
     payload = factory.createPayloadFactory().create(event, data),
     buffer  = payload.toBuffer(),
     length  = buffer.readInt32BE(0),
